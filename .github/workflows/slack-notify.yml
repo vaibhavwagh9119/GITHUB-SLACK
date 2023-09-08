@@ -36,4 +36,5 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       with:
         payload: ${{ steps.create-payload.outputs.payload }}
+      env:  
         webhook_url: ${{ secrets.SLACK_WEBHOOK }}
