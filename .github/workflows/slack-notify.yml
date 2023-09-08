@@ -5,28 +5,8 @@ jobs:
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
-
-    - name: Set Environment Variables
-      run: |
-        echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
-        echo "VERSION=1.0.0" >> $GITHUB_ENV
-        # You can set other environment variables here
-        # For example, you can use a condition to set SUCCESS or FAILED based on job outcome
-        if [[ ${{ job.status }} == 'success' ]]; then
-          echo "STATUS=Success" >> $GITHUB_ENV
-        else
-          echo "STATUS=Failed" >> $GITHUB_ENV
-        fi
-        echo "ENVIRONMENT=Production" >> $GITHUB_ENV
-
+    - uses: actions/checkout@v2
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        BRANCH: ${{ env.BRANCH }}
-        VERSION: ${{ env.VERSION }}
-        STATUS: ${{ env.STATUS }}
-        ENVIRONMENT: ${{ env.ENVIRONMENT }}
-
