@@ -1,3 +1,4 @@
+
 on: push
 name: Slack Notification Demo
 jobs:
@@ -5,36 +6,8 @@ jobs:
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
-
-    - name: Set Environment Variables
-      run: |
-        echo "BRANCH=${{ github.ref }}"
-        echo "VERSION=1.0.0"
-        if [[ ${{ job.status }} == 'success' ]]; then
-          echo "STATUS=Success"
-        else
-          echo "STATUS=Failed"
-        fi
-        echo "ENVIRONMENT=Production"
-
-    - name: Create Custom Slack Payload
-      id: create-payload
-      run: |
-        CUSTOM_PAYLOAD='{
-          "text": "Deployment Status:\nBranch: $BRANCH\nVersion: $VERSION\nStatus: $STATUS\nEnvironment: $ENVIRONMENT",
-          "attachments": [
-            {
-              "text": "Additional information can go here."
-            }
-          ]
-        }'
-        echo "::set-output name=payload::$CUSTOM_PAYLOAD"
-
+    - uses: actions/checkout@v2
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
-      env:  
-        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-      with:
-        payload: ${{ steps.create-payload.outputs.payload }}  
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
