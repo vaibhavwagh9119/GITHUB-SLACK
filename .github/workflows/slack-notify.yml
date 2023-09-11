@@ -28,24 +28,24 @@ jobs:
 
     - name: Notify Slack on success
       if: success()
-      uses: Ilshidur/action-slack@v3
+      uses: Ilshidur/action-slack@v4
       with:
         status: success
         author_name: ${{ github.actor }}
         title: ":white_check_mark: Build and Test Successful on Branch: ${{ github.ref }}"
         color: good
         fields: repo, commit, branch
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        #github_token: ${{ secrets.GITHUB_TOKEN }}
         slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
 
     - name: Notify Slack on failure
       if: failure()
-      uses: Ilshidur/action-slack@v3
+      uses: Ilshidur/action-slack@v4
       with:
         status: failure
         author_name: ${{ github.actor }}
         title: ":x: Build and Test Failed on Branch: ${{ github.ref }}"
         color: danger
         fields: repo, commit, branch
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        #github_token: ${{ secrets.GITHUB_TOKEN }}
         slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
