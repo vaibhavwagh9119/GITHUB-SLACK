@@ -1,13 +1,51 @@
 
-on: push
-name: Slack Notification Demo
+name: Slack Notification
+
+on:
+  push:
+    branches:
+      - main  # Replace 'main' with the branch you want to trigger on
+
 jobs:
-  slackNotification:
-    name: Slack Notification
+  notify_slack:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install dependencies
+      run: npm install  # Replace with your build setup if needed
+
+    - name: Build and Test
+      run: |
+        # Replace with your build and test commands
+
+    - name: Notify Slack on success
+      if: success()
+      uses: Ilshidur/action-slack@v3
+      with:
+        status: success
+        author_name: ${{ github.actor }}
+        title: ":white_check_mark: Build and Test Successful on Branch: ${{ github.ref }}"
+        color: good
+        fields: repo, commit, branch
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+
+    - name: Notify Slack on failure
+      if: failure()
+      uses: Ilshidur/action-slack@v3
+      with:
+        status: failure
+        author_name: ${{ github.actor }}
+        title: ":x: Build and Test Failed on Branch: ${{ github.ref }}"
+        color: danger
+        fields: repo, commit, branch
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
