@@ -1,51 +1,18 @@
-
-name: Slack Notification
-
-on:
-  push:
-    branches:
-      - main  # Replace 'main' with the branch you want to trigger on
-
+on: push
+name: Slack Notification Demo
 jobs:
-  notify_slack:
+  slackNotification:
+    name: Slack Notification
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14
-
-    - name: Install dependencies
-      run: npm install  # Replace with your build setup if needed
-
-    - name: Build and Test
-      run: |
-        # Replace with your build and test commands
-
-    - name: Notify Slack on success
-      if: success()
-      uses: Ilshidur/action-slack@v4
-      with:
-        status: success
-        author_name: ${{ github.actor }}
-        title: ":white_check_mark: Build and Test Successful on Branch: ${{ github.ref }}"
-        color: good
-        fields: repo, commit, branch
-        #github_token: ${{ secrets.GITHUB_TOKEN }}
-        slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-
-    - name: Notify Slack on failure
-      if: failure()
-      uses: Ilshidur/action-slack@v4
-      with:
-        status: failure
-        author_name: ${{ github.actor }}
-        title: ":x: Build and Test Failed on Branch: ${{ github.ref }}"
-        color: danger
-        fields: repo, commit, branch
-        #github_token: ${{ secrets.GITHUB_TOKEN }}
-        slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+    - uses: actions/checkout@v2
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_CHANNEL: general
+        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Post Content :rocket:'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
