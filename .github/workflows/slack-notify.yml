@@ -1,4 +1,5 @@
 on: push
+ workflow_dispatch:
 name: Slack Notification Demo
 jobs:
   slackNotification:
@@ -13,6 +14,6 @@ jobs:
         SLACK_CHANNEL: general
         SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
         SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: 'Post Content :rocket:'
-        SLACK_TITLE: Post Title
+        SLACK_MESSAGE: 'this is done by vaibhav:rocket:'
+        SLACK_TITLE: pushed by dev
         SLACK_USERNAME: rtCamp
